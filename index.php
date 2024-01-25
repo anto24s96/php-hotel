@@ -47,7 +47,7 @@ include __DIR__.'/partials/vars.php';
                                         <?php echo $hotel['description']; ?>
                                     </td>
                                     <td>
-                                        <?php echo $hotel['parking']; ?>
+                                        <?php echo $hotel['parking'] ? 'SI' : "NO"; ?>
                                     </td>
                                     <td>
                                         <?php echo $hotel['vote']; ?>
