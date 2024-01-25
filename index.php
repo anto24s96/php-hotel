@@ -1,24 +1,39 @@
 <?php 
-include __DIR__.'/partials/vars.php';
+    include __DIR__.'/partials/vars.php';
 
-$filtered_hotels = $hotels;
+    $filtered_hotels = $hotels;
 
-if (isset($_GET["parking"]) && $_GET["parking"] != '') {
-    
-    $newHotels = [];
-    $parking = $_GET["parking"];
+    if (isset($_GET["parking"]) && $_GET["parking"] != '') {
+        
+        $newHotels = [];
+        $parking = $_GET["parking"];
 
-    $parking = filter_var($parking, FILTER_VALIDATE_BOOLEAN);
+        $parking = filter_var($parking, FILTER_VALIDATE_BOOLEAN);
 
-    foreach ($filtered_hotels as $hotel) {
-        if ($hotel['parking'] == $parking) {
-            
-            $newHotels[] = $hotel;
-        };
+        foreach ($filtered_hotels as $hotel) {
+            if ($hotel['parking'] == $parking) {
+                
+                $newHotels[] = $hotel;
+            };
+        }
+
+        $filtered_hotels = $newHotels;
     }
 
-    $filtered_hotels = $newHotels;
-}
+    if (isset($_GET["vote"]) && $_GET["vote"] != '') {
+        
+        $newHotels = [];
+        $vote = $_GET["vote"];
+
+        foreach ($filtered_hotels as $hotel) {
+            if ($hotel['vote'] >= $vote) {
+                
+                $newHotels[] = $hotel;
+            };
+        }
+
+        $filtered_hotels = $newHotels;
+    }
 
 ?>
 
@@ -47,7 +62,7 @@ if (isset($_GET["parking"]) && $_GET["parking"] != '') {
         <div class="container pt-3">
             <form action="./index.php" method="GET">
                 <div class="row py-3">
-                    <div class="col-4">
+                    <div class="col-6">
                         <span class="text-white fw-bolder">Parcheggio:</span>
                         <div class="py-3 d-flex">
                             <select class="form-select" name="parking">
@@ -55,6 +70,16 @@ if (isset($_GET["parking"]) && $_GET["parking"] != '') {
                                 <option value="true">SI</option>
                                 <option value="false">NO</option>
                             </select>
+
+                            <select class="form-select mx-3 w-25" name="vote">
+                                <option value="">Rating</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+
                             <div class="px-3">
                                 <button type="submit" class="btn btn-primary text-uppercase">Filtra</button>
                             </div>
