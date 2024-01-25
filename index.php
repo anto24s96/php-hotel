@@ -1,5 +1,25 @@
 <?php 
 include __DIR__.'/partials/vars.php';
+
+$filtered_hotels = $hotels;
+
+if (isset($_GET["parking"]) && $_GET["parking"] != '') {
+    
+    $newHotels = [];
+    $parking = $_GET["parking"];
+
+    $parking = filter_var($parking, FILTER_VALIDATE_BOOLEAN);
+
+    foreach ($filtered_hotels as $hotel) {
+        if ($hotel['parking'] == $parking) {
+            
+            $newHotels[] = $hotel;
+        };
+    }
+
+    $filtered_hotels = $newHotels;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +45,23 @@ include __DIR__.'/partials/vars.php';
     </header>
     <main>
         <div class="container pt-3">
+            <form action="./index.php" method="GET">
+                <div class="row py-3">
+                    <div class="col-4">
+                        <span class="text-white fw-bolder">Parcheggio:</span>
+                        <div class="py-3 d-flex">
+                            <select class="form-select" name="parking">
+                                <option value="">Seleziona la tua scelta</option>
+                                <option value="true">SI</option>
+                                <option value="false">NO</option>
+                            </select>
+                            <div class="px-3">
+                                <button type="submit" class="btn btn-primary text-uppercase">Filtra</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="row">
                 <div class="col-12">
                     <table class="table table-striped table-primary">
@@ -38,7 +75,7 @@ include __DIR__.'/partials/vars.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($hotels as $hotel) { ?>
+                            <?php foreach ($filtered_hotels as $hotel) { ?>
                                 <tr>
                                     <td>
                                         <?php echo $hotel['name']; ?>
